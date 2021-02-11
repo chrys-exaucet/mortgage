@@ -1,0 +1,71 @@
+//
+// Created by @chrys on 2/11/2021.
+//
+
+#ifndef MORTGAGE_CLIENT_H
+#define MORTGAGE_CLIENT_H
+
+#include <time.h>
+#include "../address/address.h"
+#include "../constants/constants.h"
+
+enum DemandStatus {
+    ACCEPTED = 1,
+    PENDING = 0,
+    DENIED = -1
+};
+
+enum ClientStatus {
+    PRO_UNEMPLOYED,
+    PRO_CDD,
+    PRO_INTERIM,
+    PRO_LIBERAL,
+    CDI,
+    CDI_VALIDATED,
+    CDI_ESSAY,
+};
+
+typedef struct IBAN {
+    const char *start[4];
+    unsigned int const bankCode;
+    unsigned int const agencyCode;
+    unsigned long accountNumber;
+    unsigned int key;
+    unsigned long lastAccountNumber;
+} iban_t;
+
+iban_t defaultIBAN = {
+        {DEFAULT_IBAN_START},
+        DEFAULT_BANK_CODE,
+        DEFAULT_AGENCY_CODE,
+        DEFAULT_ACCOUNT_NUMBER,
+        DEFAULT_KEY
+};
+
+
+typedef struct Client {
+    int id;
+    char *firstName;
+    char *lastName;
+    char birthday[10];
+    iban_t iban;
+    address_t address;
+    time_t creditDate;
+    enum DemandStatus demandStatus;
+    enum ClientStatus status;
+} client_t;
+
+iban_t createIBAN(int clientId);
+
+void createClient(client_t *client);
+
+void deleteClient(int clientId);
+
+void updateClient(client_t *client);
+
+void getTAC();
+
+int getCRD(time_t date, int dueMonths);
+
+
+#endif //MORTGAGE_CLIENT_H
