@@ -1,12 +1,18 @@
 #include <stdio.h>
 #include <string.h>
 #include "../../infra/io/crud/client_crud.h"
+#include "../../cli/menu.h"
 
 
 int main() {
     printf("Welcome to the so called mortgage  app!\n");
-    //deleteClientCsv(1);
 
+    printMenu();
+
+
+    //deleteClientCsv(1);
+    time_t  currentTime;
+    currentTime = (time_t)localtime(&currentTime);
     client_t client = {
             1,
             "Chrys",
@@ -14,7 +20,7 @@ int main() {
             "xx/04/1999",
             {NULL},
             {NULL},
-            5,
+            currentTime,
             6,
             7
 
@@ -22,8 +28,9 @@ int main() {
     };
     //saveClientCsv(client);
 
-    client_t *cli = loadClientCsv(1);
+    client_t *cli = loadClientCsv(5);
 
+    printf("first_name %s", cli->firstName);
 
     return 0;
 }

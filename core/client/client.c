@@ -43,7 +43,7 @@ int getCRD(time_t date, int dueMonths) {
     return dueMonths;
 };
 
-//Roy
+
 void ibanToString(iban_t iban, char *ibanStr)
 {
     sprintf(ibanStr, "%s %d %d %ld %d %ld", iban.start,
@@ -60,7 +60,7 @@ void addressToString(address_t address, char *addressStr)
 
 void creditDateToString(time_t creditDate, char *creditDateStr)
 {
-    sprintf(creditDateStr, "%s", ctime(&creditDate));
+    strftime(creditDateStr, 99, "%d/%m/%Y", gmtime(&creditDate));
     //Deleting eventual new line char
     char *p = strchr(creditDateStr, '\n');
     if(p !=NULL)

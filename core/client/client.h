@@ -41,7 +41,7 @@ typedef struct Client {
     int id;
     char *firstName;
     char *lastName;
-    char birthday[10];
+    char birthday[11];
     iban_t iban;
     address_t address;
     time_t creditDate;
@@ -61,7 +61,6 @@ void getTAC();
 
 int getCRD(time_t date, int dueMonths);
 
-//Roy
 void ibanToString(iban_t iban, char *ibanStr);
 
 void addressToString(address_t address, char *addressStr);

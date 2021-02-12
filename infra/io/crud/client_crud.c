@@ -3,6 +3,7 @@
 //
 
 #include <string.h>
+#include <time.h>
 #include "client_crud.h"
 #include "../parser.csv/csv.h"
 #include "../../../core/client/client.h"
@@ -191,13 +192,17 @@ client_t *loadClientCsv(int clientId)
             int lineIndex = getLineIndexFromClientId(clientId);
             char str[100] = "";
             csv_load(csvBuffer, filePath);
-            client_t *client = malloc(sizeof(client));
+            client_t *client = malloc(sizeof(client_t));
             csv_get_field(str, 99, csvBuffer, lineIndex, 0);//id
             client->id = atoi(str);
+
             csv_get_field(str, 99, csvBuffer, lineIndex, 1);//first name
-            client->firstName = str;
+            client->firstName = malloc(50 * sizeof(char));
+            strcpy(client->firstName, str);
+
             csv_get_field(str, 99, csvBuffer, lineIndex, 2);//last name
-            client->lastName = str;
+            client->lastName = malloc(50 * sizeof(char));;
+            strcpy(client->lastName, str);
             csv_get_field(str, 99, csvBuffer, lineIndex, 3);//birthday
             strcpy(client->birthday, str);
             csv_get_field(str, 99, csvBuffer, lineIndex, 4);//iban
@@ -214,7 +219,7 @@ client_t *loadClientCsv(int clientId)
             };
             strcpy((char *)iban.start, *(ibanTokens + 0));
             client->iban = iban;
-            free(ibanTokens);
+            //free(ibanTokens);
 
             csv_get_field(str, 99, csvBuffer, lineIndex, 5);//address
             char **addressTokens = str_split(str, ' ');
@@ -229,7 +234,19 @@ client_t *loadClientCsv(int clientId)
             };
             client->address = address;
 
-            //csv_get_field(str, 99, csvBuffer, lineIndex, 6);//credit date
+            csv_get_field(str, 99, csvBuffer, lineIndex, 6);//credit date
+            char **creditDateTokens = str_split(str, '/');
+            struct tm t = {
+                    0,
+                    0,
+                    0,
+                    atoi(*(creditDateTokens + 0)),
+                    atoi(*(creditDateTokens + 1)) - 1,
+                    atoi(*(creditDateTokens + 2)) - 1900,
+                    };
+
+            time_t rawTime = mktime(&t);
+            client->creditDate = rawTime;
 
             csv_get_field(str, 99, csvBuffer, lineIndex, 7);//demand status
             client->demandStatus = atoi(str);

@@ -8,6 +8,7 @@
 #include "../parser.csv/csv.h"
 #include "../../../core/credit/credit.h"
 #include "../../../utils/file_utils.h"
+#include "../../../utils/stringUtils.h"
 
 
 int creditIdExists(int creditId)
@@ -186,7 +187,75 @@ int updateCreditCsv(credit_t credit)
     return 0;
 }
 
-int loadCreditCsv(credit_t *credit)
+credit_t *loadCreditCsv(int creditId)
 {
+    CSV_BUFFER *csvBuffer = csv_create_buffer();
+    char filename [] = "credit.csv";
+    char filePath [20] = "../infra/db/";
+    strcat(filePath, filename);
 
+    if(fileExists(filePath) != 0)
+        return NULL;
+    else
+    {
+        if(creditIdExists(creditId) != 0)
+            return NULL;
+        else
+        {
+            int lineIndex = getLineIndexFromCreditId(creditId);
+            char str[100] = "";
+            csv_load(csvBuffer, filePath);
+            credit_t *credit = malloc(sizeof(credit_t));
+            csv_get_field(str, 99, csvBuffer, lineIndex, 0);//credit id
+            credit->id = atoi(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 1);//client id
+            credit->clientId = atoi(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 2);//start date
+            char **startDateTokens = str_split(str, '/');
+            struct tm t = {
+                    0,
+                    0,
+                    0,
+                    atoi(*(startDateTokens + 0)),
+                    atoi(*(startDateTokens + 0)) - 1,
+                    atoi(*(startDateTokens + 0)) - 1900
+            };
+            time_t rawTime = mktime(&t);
+            credit->startDate = rawTime;
+            csv_get_field(str, 99, csvBuffer, lineIndex, 3);//income sources
+            credit->incomeSources = malloc(50 * sizeof(char));
+            strcpy(credit->incomeSources, str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 4);//health state
+            credit->healthState = malloc(50 * sizeof(char));
+            strcpy(credit->healthState, str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 5);//annual fiscal income
+            credit->annualIncome = atol(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 6);//annual income
+            credit->annualFiscalIncome = atol(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 7);//insurance coast
+            credit->insuranceCoast = atof(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 8);//available saving
+            credit->availableSaving = atoi(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 9);//salary
+            credit->salary = atol(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 10);//good
+            char **goodTokens = str_split(str, ' ');
+            good_t good;
+            strcpy(good.type, *(goodTokens + 0));
+            good.origin = malloc(50 * sizeof(char));
+            strcpy(good.origin, *(goodTokens + 1));
+            good.value = atoi(*(goodTokens + 2));
+            credit->good = good;
+            csv_get_field(str, 99, csvBuffer, lineIndex, 11);//fiscal residence
+            credit->fiscalResidence = atoi(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 12);//bank rate
+            credit->bankRate = atoi(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 13);//duration
+            credit->duration = atoi(str);
+
+            return  credit;
+
+        }
+    }
+    return NULL;
 }
