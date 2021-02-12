@@ -5,4 +5,12 @@
 #ifndef MORTGAGE_CREDIT_CRUD_H
 #define MORTGAGE_CREDIT_CRUD_H
 
+#include "../../../core/credit/credit.h"
+
+int saveCreditCsv(credit_t credit);
+
+int deleteCreditCsv(int creditId);
+
+int updateCreditCsv(credit_t credit);
+
 #endif //MORTGAGE_CREDIT_CRUD_H

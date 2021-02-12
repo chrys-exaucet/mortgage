@@ -13,4 +13,6 @@ int deleteClientCsv(int clientId);
 
 int updateClientCsv(client_t client);
 
+client_t *loadClientCsv(int clientId);
+
 #endif //MORTGAGE_CLIENT_CRUD_H

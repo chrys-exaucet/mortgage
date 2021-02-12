@@ -20,10 +20,9 @@ int main() {
 
 
     };
-    saveClientCsv(client);
+    //saveClientCsv(client);
 
-    client.demandStatus = 14;
-    client.status = 15;
-    updateClientCsv(client);
+    loadClientCsv(1);
+
     return 0;
 }

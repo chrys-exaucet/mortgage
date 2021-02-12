@@ -171,3 +171,39 @@ int updateClientCsv(client_t client)
     }
     return 0;
 }
+
+client_t *loadClientCsv(int clientId)
+{
+    CSV_BUFFER *csvBuffer = csv_create_buffer();
+    char filename [] = "client.csv";
+    char filePath [20] = "../infra/db/";
+    strcat(filePath, filename);
+
+    if(fileExists(filePath) != 0)
+        return NULL;
+    else
+    {
+        if(clientIdExists(clientId) != 0)
+            return NULL;
+        else
+        {
+            int lineIndex = getLineIndexFromClientId(clientId);
+            char str[100] = "";
+            csv_load(csvBuffer, filePath);
+            client_t *client = malloc(sizeof(client));
+            csv_get_field(str, 99, csvBuffer, lineIndex, 0);//id
+            client->id = atoi(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 1);//first name
+            client->firstName = str;
+            csv_get_field(str, 99, csvBuffer, lineIndex, 1);//last name
+            client->lastName = str;
+            csv_get_field(str, 99, csvBuffer, lineIndex, 1);//birthday
+            strcpy(client->birthday, str);
+
+
+
+            //csv_save(filePath, csvBuffer);
+        }
+    }
+    return NULL;
+}

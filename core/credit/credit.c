@@ -6,14 +6,19 @@
 #include <string.h>
 #include "credit.h"
 
-void creditStartDateToString(time_t creditDate, char *creditDateStr)
+void creditStartDateToString(time_t creditStartDate, char *creditStartDateStr)
 {
-    sprintf(creditDateStr, "%s", ctime(&creditDate));
+    sprintf(creditStartDateStr, "%s", ctime(&creditStartDate));
     //Deleting eventual new line char
-    char *p = strchr(creditDateStr, '\n');
+    char *p = strchr(creditStartDateStr, '\n');
     if(p !=NULL)
     {
         *p = '\0';
         //*(p + 1) = '\0';
     }
+}
+
+void goodToString(good_t good, char *goodStr)
+{
+    sprintf(goodStr, "%s %s %d", good.type, good.origin, good.value);
 }
