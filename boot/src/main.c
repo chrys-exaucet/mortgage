@@ -22,7 +22,8 @@ int main() {
     };
     //saveClientCsv(client);
 
-    loadClientCsv(1);
+    client_t *cli = loadClientCsv(1);
+
 
     return 0;
 }

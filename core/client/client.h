@@ -26,9 +26,9 @@ enum ClientStatus {
 };
 
 typedef struct IBAN {
-    const char *start[4];
-    unsigned int const bankCode;
-    unsigned int const agencyCode;
+    char start[4];
+    unsigned int bankCode;
+    unsigned int agencyCode;
     unsigned long accountNumber;
     unsigned int key;
     unsigned long lastAccountNumber;

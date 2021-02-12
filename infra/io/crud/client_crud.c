@@ -7,6 +7,7 @@
 #include "../parser.csv/csv.h"
 #include "../../../core/client/client.h"
 #include "../../../utils/file_utils.h"
+#include "../../../utils/stringUtils.h"
 
 
 int clientIdExists(int clientId)
@@ -195,14 +196,47 @@ client_t *loadClientCsv(int clientId)
             client->id = atoi(str);
             csv_get_field(str, 99, csvBuffer, lineIndex, 1);//first name
             client->firstName = str;
-            csv_get_field(str, 99, csvBuffer, lineIndex, 1);//last name
+            csv_get_field(str, 99, csvBuffer, lineIndex, 2);//last name
             client->lastName = str;
-            csv_get_field(str, 99, csvBuffer, lineIndex, 1);//birthday
+            csv_get_field(str, 99, csvBuffer, lineIndex, 3);//birthday
             strcpy(client->birthday, str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 4);//iban
+            //printf("iban = %s", str);
+            char **ibanTokens = str_split(str, ' ');
+            iban_t iban = {
+                    {},
+                    atoi(*(ibanTokens + 1)),
+                    atoi(*(ibanTokens + 2)),
+                    atol(*(ibanTokens + 3)),
+                    atoi(*(ibanTokens + 4)),
+                    0
+                    //atol(*(ibanTokens + 5)),
+            };
+            strcpy((char *)iban.start, *(ibanTokens + 0));
+            client->iban = iban;
+            free(ibanTokens);
 
+            csv_get_field(str, 99, csvBuffer, lineIndex, 5);//address
+            char **addressTokens = str_split(str, ' ');
+            road_t road = {
+                    (int)*(addressTokens + 0),
+                    (int)*(addressTokens + 1)
+            };
+            address_t address = {
+                    road,
+                    *(addressTokens + 2),
+                    *(addressTokens + 3)
+            };
+            client->address = address;
 
+            //csv_get_field(str, 99, csvBuffer, lineIndex, 6);//credit date
 
-            //csv_save(filePath, csvBuffer);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 7);//demand status
+            client->demandStatus = atoi(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 8);//status
+            client->status = atoi(str);
+
+            return client;
         }
     }
     return NULL;
