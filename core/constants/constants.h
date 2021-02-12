@@ -6,13 +6,14 @@
 #define MORTGAGE_CONSTANTS_H
 
 // IBAN related
-static const char DEFAULT_IBAN_START[4] = "FR21";
-static const unsigned int DEFAULT_BANK_CODE = 30001;
-static const unsigned int DEFAULT_AGENCY_CODE = 00021;
-static const unsigned long DEFAULT_ACCOUNT_NUMBER = 0000000001;
-static const int DEFAULT_ACCOUNT_NUMBER_INCREMENT = 2;
-static const int DEFAULT_KEY = 10;
-static const int DEFAULT_KEY_INCREMENT = 2;
+
+#define DEFAULT_IBAN_START "FR21"
+#define DEFAULT_BANK_CODE 30001
+#define DEFAULT_AGENCY_CODE 00021
+#define DEFAULT_ACCOUNT_NUMBER 0000000001
+#define DEFAULT_ACCOUNT_NUMBER_INCREMENT 2
+#define DEFAULT_KEY 10
+#define DEFAULT_KEY_INCREMENT 2
 
 
 // Bank related

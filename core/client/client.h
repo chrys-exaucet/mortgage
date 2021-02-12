@@ -34,13 +34,7 @@ typedef struct IBAN {
     unsigned long lastAccountNumber;
 } iban_t;
 
-iban_t defaultIBAN = {
-        {DEFAULT_IBAN_START},
-        DEFAULT_BANK_CODE,
-        DEFAULT_AGENCY_CODE,
-        DEFAULT_ACCOUNT_NUMBER,
-        DEFAULT_KEY
-};
+
 
 
 typedef struct Client {
@@ -66,6 +60,15 @@ void updateClient(client_t *client);
 void getTAC();
 
 int getCRD(time_t date, int dueMonths);
+
+//Roy
+void ibanToString(iban_t iban, char *ibanStr);
+
+void addressToString(address_t address, char *addressStr);
+
+void creditDateToString(time_t creditDate, char *creditDateStr);
+
+void demandStatusToString(int demandStatus, char *demandStatusStr);
 
 
 #endif //MORTGAGE_CLIENT_H
