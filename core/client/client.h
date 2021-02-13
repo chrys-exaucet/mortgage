@@ -20,19 +20,16 @@ enum ClientStatus {
     PRO_CDD,
     PRO_INTERIM,
     PRO_LIBERAL,
-    CDI,
     CDI_VALIDATED,
     CDI_ESSAY,
 };
 
 typedef struct IBAN {
-    char start[4];
+    char * start;
     unsigned int bankCode;
     unsigned int agencyCode;
     unsigned long accountNumber;
     unsigned int key;
-    // TODO:
-    unsigned long lastAccountNumber;
 } iban_t;
 
 
@@ -50,7 +47,7 @@ typedef struct Client {
     enum ClientStatus status;
 } client_t;
 
-iban_t createIBAN(int clientId);
+iban_t createIBAN();
 
 client_t *createClient();
 

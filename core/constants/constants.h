@@ -6,6 +6,9 @@
 #define MORTGAGE_CONSTANTS_H
 
 // IBAN related
+extern  int lastAccountNumber;
+extern int lastKey;
+
 #define DEFAULT_IBAN_START  "FR21"
 #define DEFAULT_BANK_CODE  30001
 #define DEFAULT_AGENCY_CODE  00021
