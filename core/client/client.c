@@ -186,29 +186,26 @@ iban_t createIBAN() {
     iban.key = lastKey + DEFAULT_KEY_INCREMENT;
 
     lastAccountNumber += iban.accountNumber;
+    lastKey += iban.key;
 
-    if (lastKey == iban.key)
+    if (lastKey == 99)
         lastKey = DEFAULT_KEY;
-    else
-        lastKey += iban.key;
 
     return iban;
 }
 
 void getTAC() {
-
-    // TODO
+    // TODO: getTAC
 }
 
 int getCRD(time_t date, int dueMonths) {
-
-    // TODO
-    return dueMonths;
+    // TODO: getCRD
+    return 0;
 }
 
 
 void ibanToString(iban_t iban, char *ibanStr) {
-    sprintf(ibanStr, "%s %d %d %ld %d %ld", iban.start,
+    sprintf(ibanStr, "%s %d %d %ld %d", iban.start,
             iban.bankCode, iban.agencyCode, iban.accountNumber,
             iban.key);
 }
@@ -230,7 +227,7 @@ void creditDateToString(time_t creditDate, char *creditDateStr) {
 
 void printIban(iban_t i) {
     printf("IBAN : ");
-    printf("%s %d %d %ld %d %ld\n", i.start,
+    printf("%s %d %d %ld %d \n", i.start,
            i.bankCode, i.agencyCode, i.accountNumber,
            i.key);
 }
@@ -294,12 +291,9 @@ void getClientStatusStr(enum ClientStatus clientStatus, char *clientStatusStr) {
             strcpy(clientStatusStr, "Liberal");
             break;
         case 4:
-            strcpy(clientStatusStr, "CDI");
-            break;
-        case 5:
             strcpy(clientStatusStr, "CDI valide");
             break;
-        case 6:
+        case 5:
             strcpy(clientStatusStr, "CDI essai");
             break;
         default:

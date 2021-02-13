@@ -87,10 +87,12 @@ void run() {
 }
 
 void grantCredit() {
+    // TODO: credit
     printf("Grant credit\n");
 }
 
 void printRemainingCapital() {
+    // TODO: capital
     printf("Print remaining capital\n");
 }
 

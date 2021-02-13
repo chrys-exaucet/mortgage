@@ -4,9 +4,7 @@
 
 
 int main() {
-
-    run();
-
+    // run();
     credit_t *c = loadCreditCsv(1);
     credit_t *credit = createCredit();
     return 0;
