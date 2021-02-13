@@ -6,9 +6,8 @@
 #include <string.h>
 #include "credit_crud.h"
 #include "../parser.csv/csv.h"
-#include "../../../core/credit/credit.h"
-#include "../../../utils/file_utils.h"
-#include "../../../utils/stringUtils.h"
+#include "../../../utils/file/file_utils.h"
+#include "../../../utils/strings/stringUtils.h"
 
 
 int creditIdExists(int creditId)

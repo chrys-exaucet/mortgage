@@ -5,7 +5,7 @@
 #ifndef MORTGAGE_STRINGUTILS_H
 #define MORTGAGE_STRINGUTILS_H
 
-char** str_split(char* a_str, const char a_delim);
+char** str_split(char* a_str, char a_delim);
 
 int readString(char *string, int length);
 

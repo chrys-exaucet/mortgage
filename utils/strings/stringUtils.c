@@ -2,23 +2,23 @@
 // Created by @chrys on 2/11/2021.
 //
 
+//
+// updated by @roy on  2/12/2021.
+//
+
 #include <stdio.h>
 #include <stddef.h>
 #include <malloc.h>
 #include <string.h>
 #include "stringUtils.h"
 
-char *concat(const char *array) {
-
-}
-
 /*
  * https://stackoverflow.com/questions/9210528/split-string-with-delimiters-in-c
  *
  */
-char** str_split(char* a_str, const char a_delim)
+char** str_split(char* a_str,  char a_delim)
 {
-    char** result    = 0;
+    char** result    ;
     size_t count     = 0;
     char* tmp        = a_str;
     char* last_comma = 0;

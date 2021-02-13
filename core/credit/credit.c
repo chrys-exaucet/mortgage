@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "credit.h"
-#include "../../utils/stringUtils.h"
+#include "../../utils/strings/stringUtils.h"
 #include "../../infra/io/crud/client_crud.h"
 #include "../../infra/io/crud/credit_crud.h"
 #include "../../core/client//client.h"
