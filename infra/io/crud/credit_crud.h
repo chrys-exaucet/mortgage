@@ -7,6 +7,8 @@
 
 #include "../../../core/credit/credit.h"
 
+int creditIdExists(int creditId);
+
 int saveCreditCsv(credit_t credit);
 
 int deleteCreditCsv(int creditId);

@@ -71,7 +71,7 @@ void readStatus(char *buffer, client_t *client)
     client->status = atoi(buffer);
 }
 
-void readId(char *buffer, client_t *client)
+void readClientId(char *buffer, client_t *client)
 {
     int id = 0;
     do{
@@ -96,7 +96,7 @@ client_t *createClient() {
     int isReadingOk = 0;
     printf("*Creation d'un client*\n\n");
 
-    readId(buffer, client);
+    readClientId(buffer, client);
     readFirstName(buffer, client);
     readLastName(buffer, client);
     readBirthday(buffer, client);

@@ -59,7 +59,7 @@ int isSalaryValid(unsigned salary);
 
 int isFiscalRevenueValid(unsigned long revenue);
 
-//Roy
+
 void creditStartDateToString(time_t creditStartDate, char *creditStartDateStr);
 
 void goodToString(good_t good, char *goodStr);
