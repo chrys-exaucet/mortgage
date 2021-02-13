@@ -55,7 +55,7 @@ int isEligible(int clientId);
 
 int isStatusValid(enum ClientStatus clientStatus, char args[]);
 
-int isSalaryValid(unsigned salary);
+int isSalaryValid(unsigned int salary);
 
 int isFiscalRevenueValid(unsigned long revenue);
 

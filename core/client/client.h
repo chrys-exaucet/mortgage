@@ -31,6 +31,7 @@ typedef struct IBAN {
     unsigned int agencyCode;
     unsigned long accountNumber;
     unsigned int key;
+    // TODO:
     unsigned long lastAccountNumber;
 } iban_t;
 
