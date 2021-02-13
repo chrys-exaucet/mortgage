@@ -93,7 +93,6 @@ client_t *createClient() {
     client->lastName = malloc(50 * sizeof(char));
 
     char buffer[50] = "";
-    int isReadingOk = 0;
     printf("*Creation d'un client*\n\n");
 
     readClientId(buffer, client);

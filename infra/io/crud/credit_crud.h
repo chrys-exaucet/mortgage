@@ -15,4 +15,6 @@ int deleteCreditCsv(int creditId);
 
 int updateCreditCsv(credit_t credit);
 
+credit_t *loadCreditCsv(int creditId);
+
 #endif //MORTGAGE_CREDIT_CRUD_H

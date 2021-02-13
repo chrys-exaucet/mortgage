@@ -7,6 +7,7 @@
 #include "menu.h"
 #include "../core/client/client.h"
 #include "../utils/stringUtils.h"
+#include "../core/credit/credit.h"
 
 
 int isNumberInList(const int number, const int list [], const int listSize)
@@ -122,7 +123,7 @@ void printMenu()
             case 5:
                 system("cls");
                 printf("Vous avez choisi le %d\n", userChoice);
-                grantCredit();
+                createCredit();
                 system("pause");
                 break;
 

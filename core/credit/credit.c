@@ -43,7 +43,7 @@ void readCreditId(char *buffer, credit_t *credit)
     credit->id = id;
 }
 
-void readCliId(char *buffer, credit_t *credit)
+int readCliId(char *buffer, credit_t *credit)
 {
     int id = 0;
     do{
@@ -51,41 +51,46 @@ void readCliId(char *buffer, credit_t *credit)
         readString(buffer, 4);
         id = atoi(buffer);
 
-        if(creditIdExists(id) != 0)
+        if(clientIdExists(id) != 0)
             printf("Aucun client n'a cet identifiant");
 
-    } while (creditIdExists(id) != 0);
+    } while (clientIdExists(id) != 0);
     credit->clientId = id;
     client_t *client = loadClientCsv(id);
 
-    char errorMessage[80] = "Desole, aucun credit ne peut etre octroye a ce client. ";
+    char errorMessage[100] = "Desole, aucun credit ne peut etre octroye a ce client. ";
     switch (client->status)
     {
         case PRO_UNEMPLOYED:
             strcat(errorMessage, "(non salarie)");
-            return;
+            printf("\n%s", errorMessage);
+            return -1;
         case PRO_CDD:
             strcat(errorMessage, "(CDD)");
-            return;
+            printf("\n%s", errorMessage);
+            return -1;
         case PRO_INTERIM:
             strcat(errorMessage, "(interim)");
-            return;
+            printf("\n%s", errorMessage);
+            return -1;
         case CDI_ESSAY:
             strcat(errorMessage, "(CDI essai)");
-            break;
+            printf("\n%s", errorMessage);
+            return -1;
 
         case PRO_LIBERAL:
             printf("\nLe client a-t-il des revenus stables sur l'annee ? (1. Oui, 2. Non)");
             readString(buffer, 2);
             if(atoi(buffer) == 2)
             {
+                strcat(errorMessage, "(revenus instables)");
                 printf("\n%s", errorMessage);
-                return;
+                return -1;
             }
-            break;
+            return 0;
 
         case CDI_VALIDATED:
-            break;
+            return 0;
     }
 
 }
@@ -110,9 +115,23 @@ void readIncomeSources(char *buffer, credit_t *credit)
 void readHealthState(char *buffer, credit_t *credit)
 {
     credit->healthState = malloc(50 * sizeof(char));
-    printf("\nEtat de sante : ");
-    readString(buffer, 50);
-    strcpy(credit->healthState, buffer);
+    printf("\nEtat de sante : \n");
+    printf("\t1. Bien portant\n");
+    printf("\t2. Souffrant d'une pathlogie grave\n");
+    printf("\tVotre choix : ");
+    readString(buffer, 3);
+    switch (atoi(buffer))
+    {
+        case 1:
+            strcpy(credit->healthState, "Bien portant");
+            break;
+        case 2:
+            strcpy(credit->healthState, "Pathologie grave");
+            break;
+        default:
+            strcpy(credit->healthState, "Bien portant");
+            break;
+    }
 }
 
 void readAnnualFiscalIncome(char *buffer, credit_t *credit)
@@ -130,14 +149,21 @@ void readSalary(char *buffer, credit_t *credit)
     printf("\nSalaire mensuel : ");
     readString(buffer, 10);
     credit->salary = atol(buffer);
+    printf("\nSur combien de temps le client percoit-il ce salaire ?\n");
+    printf("\t1. 12 mois\n");
+    printf("\t2. 13 mois\n");
+    printf("\tVotre choix :");
+    readString(buffer, 10);
+    credit->annualIncome = atoi(buffer) * credit->salary;
 }
 
-void readAvailableSaving(char *buffer, credit_t *credit)
+int readAvailableSaving(char *buffer, credit_t *credit)
 {
     printf("\nMontant d'epargne disponible :");
     readString(buffer, 10);
     unsigned int availableSaving = atoi(buffer);
     //Logic to implement later
+    return 0;
 }
 
 void readGood(char *buffer, credit_t *credit)
@@ -196,9 +222,14 @@ void readGood(char *buffer, credit_t *credit)
     readString(buffer, 50);
     strcpy(good.origin, buffer);
 
-    printf("\n\tValeur :");
-    readString(buffer, 10);
-    good.value = atoi(buffer);
+    do
+    {
+        printf("\n\tValeur :");
+        readString(buffer, 10);
+        good.value = atoi(buffer);
+        if(good.value <= 0)
+            printf("\nValeur invalide.");
+    } while (good.value <= 0);
     printf("\n");
 
     credit->good = good;
@@ -229,7 +260,7 @@ void readBankRate(char *buffer, credit_t *credit)
     printf("\n");
 }
 
-void readFiscalResidence(char *buffer, credit_t *credit)
+int readFiscalResidence(char *buffer, credit_t *credit)
 {
     printf("\nResidence Fiscale\n");
     printf("\t1. France\n");
@@ -241,22 +272,76 @@ void readFiscalResidence(char *buffer, credit_t *credit)
     {
         case 1:
             credit->fiscalResidence = FRANCE;
-            break;
+            return 0;
         case 2:
             credit->bankRate = EU;
-            break;
+            return 0;
         case 3:
             credit->bankRate = NOT_EU;
             printf("\nCredit non octroye (hors UE)\n");
-            break;
+            return -1;
         default:
+            return -1;
+    }
+
+}
+
+void readDuration(char *buffer, credit_t *credit)
+{
+    do
+    {
+        printf("\nDuree du credit :\n");
+        printf("\t1. 15 ans\n");
+        printf("\t2. 20 ans\n");
+        printf("\t3. 25 ans\n");
+        printf("\tVotre choix : ");
+        readString(buffer, 3);
+    }while(atoi(buffer) < 1 || atoi(buffer) > 3);
+
+    switch (atoi(buffer))
+    {
+        case 1:
+            credit->duration = FIFTEEN;
+            break;
+        case 2:
+            credit->duration = TWENTY;
+            break;
+        case 3:
+            credit->duration = TWENTY_FIVE;
             break;
     }
 
 }
 
+credit_t *createCredit()
+{
+    credit_t *credit = malloc(sizeof (credit_t));
+    char buffer[50] = "";
 
-void createCredit()
+
+    readCreditId(buffer, credit);
+    if (readCliId(buffer, credit) != 0)
+        return credit;
+    readGood(buffer, credit);
+    if (readAvailableSaving(buffer, credit) != 0)
+        return credit;
+    readSalary(buffer, credit);
+    readIncomeSources(buffer, credit);
+    readAnnualFiscalIncome(buffer, credit);
+    if (readFiscalResidence(buffer, credit) != 0)
+        return credit;
+    readHealthState(buffer, credit);
+    readBankRate(buffer, credit);
+    readDuration(buffer, credit);
+
+    //Things to add later by Chrys
+
+    saveCreditCsv(*credit);
+    return credit;
+
+}
+
+void printCredits()
 {
 
 }

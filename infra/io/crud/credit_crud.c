@@ -45,6 +45,7 @@ int getLineIndexFromCreditId(int creditId)
     else
     {
         CSV_BUFFER *csvBuffer = csv_create_buffer();
+        csv_set_field_delim(csvBuffer, ';');
         csv_load(csvBuffer, filePath);
         char id[4] = "";
         for (int i = 1; i < csvBuffer->rows; ++i)
@@ -99,6 +100,7 @@ int saveCreditCsv(credit_t credit)
     if(&credit == NULL)
         return -1;
     CSV_BUFFER *csvBuffer = csv_create_buffer();
+    csv_set_field_delim(csvBuffer, ';');
     char filename [] = "credit.csv";
     char filePath [20] = "../infra/db/";
     strcat(filePath, filename);
@@ -108,7 +110,6 @@ int saveCreditCsv(credit_t credit)
         FILE *file = fopen(filePath, "w");
         fclose(file);
         free(file);
-        //csv_set_field_delim(csvBuffer, ';');
         csv_set_field(csvBuffer, 0, 0, "id");
         csv_set_field(csvBuffer, 0, 1, "client_id");
         csv_set_field(csvBuffer, 0, 2, "credit_start_date");
@@ -217,8 +218,8 @@ credit_t *loadCreditCsv(int creditId)
                     0,
                     0,
                     atoi(*(startDateTokens + 0)),
-                    atoi(*(startDateTokens + 0)) - 1,
-                    atoi(*(startDateTokens + 0)) - 1900
+                    atoi(*(startDateTokens + 1)) - 1,
+                    atoi(*(startDateTokens + 2)) - 1900
             };
             time_t rawTime = mktime(&t);
             credit->startDate = rawTime;

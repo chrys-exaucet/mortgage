@@ -21,9 +21,9 @@ enum BankRate {
 };
 
 enum CreditDuration {
-    TEN = 120,
-    TWENTY = 240,
-    FIFTY = 360
+    FIFTEEN = 15,
+    TWENTY = 20,
+    TWENTY_FIVE = 25
 };
 
 typedef struct Credit {
@@ -63,5 +63,7 @@ int isFiscalRevenueValid(unsigned long revenue);
 void creditStartDateToString(time_t creditStartDate, char *creditStartDateStr);
 
 void goodToString(good_t good, char *goodStr);
+
+credit_t *createCredit();
 
 #endif //MORTGAGE_CREDIT_H
