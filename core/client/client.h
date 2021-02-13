@@ -51,11 +51,11 @@ typedef struct Client {
 
 iban_t createIBAN(int clientId);
 
-void createClient(client_t *client);
+client_t *createClient();
 
-void deleteClient(int clientId);
+void deleteClient();
 
-void updateClient(client_t *client);
+void updateClient();
 
 void getTAC();
 
@@ -68,6 +68,10 @@ void addressToString(address_t address, char *addressStr);
 void creditDateToString(time_t creditDate, char *creditDateStr);
 
 void demandStatusToString(int demandStatus, char *demandStatusStr);
+
+void printClient(client_t c);
+
+void printClients();
 
 
 #endif //MORTGAGE_CLIENT_H

@@ -2,7 +2,7 @@
 // Created by @chrys on 2/11/2021.
 //
 
-
+#include <stdio.h>
 #include <stddef.h>
 #include <malloc.h>
 #include <string.h>
@@ -67,4 +67,41 @@ char** str_split(char* a_str, const char a_delim)
     }
 
     return result;
+}
+
+
+/*
+ * https://openclassrooms.com/fr/courses/19980-apprenez-a-programmer-en-c/16993-la-saisie-de-texte-securisee
+ * */
+void cleanBuffer()
+{
+    int c = 0;
+    while (c != '\n' && c != EOF)
+    {
+        c = getchar();
+    }
+}
+
+int readString(char *string, int length)
+{
+    char *enterCharacterPosition = NULL;
+
+    if (fgets(string, length, stdin) != NULL)
+    {
+        enterCharacterPosition = strchr(string, '\n');
+        if (enterCharacterPosition != NULL)
+        {
+            *enterCharacterPosition = '\0';
+        }
+        else
+        {
+            cleanBuffer();
+        }
+        return 1;
+    }
+    else
+    {
+        cleanBuffer();
+        return 0;
+    }
 }

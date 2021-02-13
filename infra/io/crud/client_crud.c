@@ -91,6 +91,7 @@ int saveClientCsv(client_t client)
     if(&client == NULL)
         return -1;
     CSV_BUFFER *csvBuffer = csv_create_buffer();
+    csv_set_field_delim(csvBuffer, ';');
     char filename [] = "client.csv";
     char filePath [20] = "../infra/db/";
     strcat(filePath, filename);
@@ -100,7 +101,6 @@ int saveClientCsv(client_t client)
         FILE *file = fopen(filePath, "w");
         fclose(file);
         free(file);
-        //csv_set_field_delim(csvBuffer, ';');
         csv_set_field(csvBuffer, 0, 0, "id");
         csv_set_field(csvBuffer, 0, 1, "first_name");
         csv_set_field(csvBuffer, 0, 2, "last_name");
@@ -128,6 +128,7 @@ int saveClientCsv(client_t client)
 int deleteClientCsv(int clientId)
 {
     CSV_BUFFER *csvBuffer = csv_create_buffer();
+    csv_set_field_delim(csvBuffer, ';');
     char filename [] = "client.csv";
     char filePath [20] = "../infra/db/";
     strcat(filePath, filename);
@@ -151,6 +152,7 @@ int deleteClientCsv(int clientId)
 int updateClientCsv(client_t client)
 {
     CSV_BUFFER *csvBuffer = csv_create_buffer();
+    csv_set_field_delim(csvBuffer, ';');
     char filename [] = "client.csv";
     char filePath [20] = "../infra/db/";
     strcat(filePath, filename);
@@ -177,6 +179,8 @@ int updateClientCsv(client_t client)
 client_t *loadClientCsv(int clientId)
 {
     CSV_BUFFER *csvBuffer = csv_create_buffer();
+    csv_set_field_delim(csvBuffer, ';');
+    csv_set_field_delim(csvBuffer, ';');
     char filename [] = "client.csv";
     char filePath [20] = "../infra/db/";
     strcat(filePath, filename);

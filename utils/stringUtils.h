@@ -7,4 +7,6 @@
 
 char** str_split(char* a_str, const char a_delim);
 
+int readString(char *string, int length);
+
 #endif //MORTGAGE_STRINGUTILS_H

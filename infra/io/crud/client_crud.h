@@ -15,4 +15,6 @@ int updateClientCsv(client_t client);
 
 client_t *loadClientCsv(int clientId);
 
+int clientIdExists(int clientId);
+
 #endif //MORTGAGE_CLIENT_CRUD_H
