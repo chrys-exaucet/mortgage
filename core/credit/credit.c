@@ -55,15 +55,15 @@ int readClientStatus(char *buffer, credit_t *credit) {
     char errorMessage[100] = "Desole, aucun credit ne peut etre octroye a ce client. ";
     switch (client->status) {
         case PRO_UNEMPLOYED:
-            strcat(errorMessage, "(non salarie)");
+            strcat(errorMessage, "( Non salarie)");
             printf("\n%s", errorMessage);
             return -1;
         case PRO_CDD:
-            strcat(errorMessage, "(CDD)");
+            strcat(errorMessage, "( CDD)");
             printf("\n%s", errorMessage);
             return -1;
         case PRO_INTERIM:
-            strcat(errorMessage, "(interim)");
+            strcat(errorMessage, "(Interim)");
             printf("\n%s", errorMessage);
             return -1;
         case CDI_ESSAY:

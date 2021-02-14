@@ -10,6 +10,5 @@ int main() {
     credit_t *c = loadCreditCsv(1);
     printAmortizationTable();
     return 0;
-
 }
 

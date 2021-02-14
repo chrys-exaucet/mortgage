@@ -1,6 +1,5 @@
-# cmake_minimum_required(VERSION <specify CMake version here>)
+cmake_minimum_required(VERSION 3.13)
 project(mortgage C)
-
 set(CMAKE_C_STANDARD 99)
 
 add_executable(mortgage boot/src/main.c )
