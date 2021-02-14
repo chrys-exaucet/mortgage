@@ -1,3 +1,2 @@
 id;first_name;last_name;birthday_date;iban;address;credit_date;demand_status;client_status
-1;John;DOE;14/02/2021;FR21 30001 17 7 16;6447696 6447700 Washington 3000;14/02/2021;1;4
-2;John2;DOE;14/02/1980;FR21 30001 17 3 12;1 1 12500 Dakar;14/02/2021;0;0
+1;John_3;DOE;23/05/1975;FR21 30001 17 3 12;11968936 11968940 Paris 12500;14/02/2021;0;4

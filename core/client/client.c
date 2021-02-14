@@ -45,10 +45,10 @@ void readAddress(char *buffer, client_t *client) {
     address.city = malloc(20 * sizeof(char));
     address.postalCode = malloc(20 * sizeof(char));
     printf("\nAdresse :");
-    printf("\n\tNumero de route : ");
+    printf("\n\tNumero de voie : ");
     readString(buffer, 50);
     address.road.number = atoi(buffer);
-    printf("\n\tType de route (0. Boulevard, 1. Route, 2. Inconnu): ");
+    printf("\n\tType de voie (0. Boulevard, 1. Rue, 2. Avenue): ");
     readString(buffer, 50);
     address.road.type = atoi(buffer);
     printf("\n\tVille : ");
@@ -62,7 +62,7 @@ void readAddress(char *buffer, client_t *client) {
 
 void readStatus(char *buffer, client_t *client) {
     //client status
-    printf("\nStatut (0. Non salarie, 1. CDD, 2. Interim, 3. Liberal, 4. CDI, 5. CDI valide, 6. CDI essai) : ");
+    printf("\nStatut professionnel (0. Non salarie, 1. CDD, 2. Interim, 3. Liberal, 4. CDI valide, 5. CDI essai) : ");
     readString(buffer, 50);
     client->status = atoi(buffer);
 }
@@ -529,6 +529,8 @@ void printAmortizationTable()
     int creditId = getCreditId(clientId);
     credit_t *credit = loadCreditCsv(creditId);
 
+    saveAmortizationTable(clientId);
+
 
     printf("\n%57s\n", "Tableau d'amortissement");
     printf("+-------------------");
@@ -613,7 +615,7 @@ void printAmortizationTable()
     printf("---------------+");
     printf("\n");
 
-    saveAmortizationTable(clientId);
+
 }
 
 

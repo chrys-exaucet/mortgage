@@ -406,6 +406,7 @@ credit_t *createCredit() {
     readStartDate(credit);
     if (canHaveCredit(credit) != 0)
         return credit;
+    updateClientCsv(*loadClientCsv(credit->clientId));
     saveCreditCsv(*credit);
 
     return credit;

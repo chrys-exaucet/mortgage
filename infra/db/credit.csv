@@ -1,3 +1,2 @@
 id;client_id;credit_start_date;other_income_sources;health_state;annual_fiscal_income;annual_income;insurance_coast;taeg;tmi;monthly_payment;interest;availble_saving;monthly_salary;other_rebates;monthly_pension;fixed_charges_amount;cost;capital;dossier_fee;crd;good;fiscal_residence;bankRate;duration
-1;1;14/02/2021;12000;Bien portant;12000;1702730553;225.00;0.02;0.00;141.00;242.13;50000;50000;12000;12000;12000;487;25487;25;25487;Maison neuve Dakar 10000;0;0;15
-2;1;14/02/2021;30000;Bien portant;20000;1702790553;315.00;0.02;0.00;198.00;338.98;50000;55000;3000;0;5000;682;35682;35;35682;Maison neuve Dakar 20000;0;0;15
+1;1;14/02/2021;12000;Bien portant;14000;600000;225.00;0.02;0.00;141.00;242.13;50000;50000;12000;3000;3000;487;25487;25;25487;Maison neuve Paris 10000;0;0;15
