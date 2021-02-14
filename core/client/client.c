@@ -610,6 +610,7 @@ void printRemainingCapital() {
     printf("\nEntrez l'id du client dont vous voulez voir le Capital Restant Du (CRD):");
     readString(buffer, 4);
     int clientId = atoi(buffer);
+    //int clientId = 1;
     if (clientIdExists(clientId) != 0) {
         printf("\n\nDesole ce client n'existe pas !\n");
         return;
@@ -625,33 +626,33 @@ void printRemainingCapital() {
     credit_t *credit = loadCreditCsv(creditId);
 
     creditStartDateToString(credit->startDate, buffer);
-    printf("| Nom : %17s %s | %s : %11s | %s %13s |\n", client->firstName,
+    printf("| Nom : %s %s | %s : %s | %s %s |\n", client->firstName,
            client->lastName, "Date de naissance",
            client->birthday, "Date de début du pret :", buffer);
 
 
-    char crdDate[50];
+    char crdDate[50] = "";
     printf("\nEntrez la date pour  laquelle vous voulez voir le Capital Restant Du (CRD)  au format dd/MM/YYYY:");
     readString(buffer, 50);
+    //strcpy(buffer, "14/03/2030");
     strcpy(crdDate, buffer);
     time_t targetDate = toDate(crdDate);
-    int remainingMonths = getMonthDiff(targetDate, credit->startDate);
+    int monthDiff = getMonthDiff(targetDate, credit->startDate);
 
-    if (remainingMonths < 0) {
+    if (monthDiff < 0) {
         printf("\nLa date pour  laquelle vous voulez voir le Capital Restant Du (CRD) est antérieure au  début du crédit:");
         return;
     }
-    if (remainingMonths > credit->duration * 12) {
+    if (monthDiff > credit->duration * 12) {
         printf("\nLa date pour  laquelle vous voulez voir le Capital Restant Du (CRD) est postérieure à la fin du crédit:");
         return;
     }
 
+    int remainingMonths = credit->duration * 12 - monthDiff;
+        printf("\n###BEFORE\n");
     float crd = getCRD(*credit, remainingMonths);
-    printf("  Capital Restant Du:  %15.2f |\n", crd);
-    printf("  Mensualité restant à payer payer:  %d |\n", remainingMonths);
+        printf("\n###AFTER\n");
+    printf("  Capital Restant Du: %.2f \n", crd);
+    printf("  Mensualites restant a payer payer:  %d\n", remainingMonths);
 
 }
-
-void printCrd
-
-

@@ -4,7 +4,8 @@
 #include "../../infra/io/crud/credit_crud.h"
 
 int main() {
-    while (1)
-        run();
+    //while (1)
+        //run();
+    printRemainingCapital();
 }
 

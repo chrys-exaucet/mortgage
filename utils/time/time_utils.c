@@ -69,22 +69,26 @@ time_t addMonthsToDate(const time_t date, int months) {
 
 int getYearDiff(time_t date1, time_t date2) {
 
-    struct tm *d1;
-    struct tm *d2;
-    d1 = localtime(&date1);
-    d2 = localtime(&date2);
-    return d1->tm_year - d2->tm_year;
+    struct tm *dTemp = localtime(&date1);
+    struct tm d1 = *dTemp;
+    dTemp = localtime(&date2);
+    struct tm d2 = *dTemp;
+    return d1.tm_year - d2.tm_year;
 }
 
 
 
 int getMonthDiff(time_t date1, time_t date2) {
 
-    struct tm *d1;
-    struct tm *d2;
-    d1 = localtime(&date1);
-    d2 = localtime(&date2);
-    return d1->tm_mon - d2->tm_mon  ;
+    struct tm *dTemp = localtime(&date1);
+    struct tm d1 = *dTemp;
+    dTemp = localtime(&date2);
+    struct tm d2 = *dTemp;
+    //d1 = localtime(&date1);
+    //d2 = localtime(&date2);
+    int months1 = d1.tm_year * 12 + d1.tm_mon;
+    int months2 = d2.tm_year * 12 + d2.tm_mon;
+    return months1 - months2  ;
 }
 
 time_t toDate(char *str) {
@@ -99,6 +103,7 @@ time_t toDate(char *str) {
             atoi(*(tokens + 2)) - 1900,
     };
     time_t rawTime = mktime(&t);
+    return rawTime;
 }
 
 
