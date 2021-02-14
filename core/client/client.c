@@ -652,4 +652,6 @@ void printRemainingCapital() {
 
 }
 
+void printCrd
+
 
