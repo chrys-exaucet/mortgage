@@ -87,12 +87,6 @@ void run() {
 
 }
 
-void printRemainingCapital() {
-    // TODO: capital
-    printf("Print remaining capital\n");
-}
-
-
 void printMenuHeader() {
     FILE *file = fopen("../cli/menu_header", "r");
     if (file == NULL)

@@ -3,6 +3,9 @@
 //
 
 #include "time_utils.h"
+#include "../strings/stringUtils.h"
+#include <stdlib.h>
+
 
 #include <assert.h>
 
@@ -71,6 +74,31 @@ int getYearDiff(time_t date1, time_t date2) {
     d1 = localtime(&date1);
     d2 = localtime(&date2);
     return d1->tm_year - d2->tm_year;
+}
+
+
+
+int getMonthDiff(time_t date1, time_t date2) {
+
+    struct tm *d1;
+    struct tm *d2;
+    d1 = localtime(&date1);
+    d2 = localtime(&date2);
+    return d1->tm_mon - d2->tm_mon  ;
+}
+
+time_t toDate(char *str) {
+
+    char **tokens = str_split(str, '/');
+    struct tm t = {
+            0,
+            0,
+            0,
+            atoi(*(tokens + 0)),
+            atoi(*(tokens + 1)) - 1,
+            atoi(*(tokens + 2)) - 1900,
+    };
+    time_t rawTime = mktime(&t);
 }
 
 

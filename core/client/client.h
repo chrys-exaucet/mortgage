@@ -68,7 +68,7 @@ void printClient(client_t c);
 
 void printClients();
 
-//TODO just for test
+
 void printAmortizationTable();
 void saveAmortizationTable(int clientId);
 

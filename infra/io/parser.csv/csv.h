@@ -223,7 +223,7 @@ int csv_get_field(char *dest, size_t dest_len,
  *
  * Returns:
  *  0: success
- *  TODO errors
+ *  1:  errors
  */
 int csv_clear_field(CSV_BUFFER *buffer, size_t row, size_t entry);
 
