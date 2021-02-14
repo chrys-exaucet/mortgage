@@ -10,48 +10,55 @@
 #include "../../../utils/strings/stringUtils.h"
 
 
-int creditIdExists(int creditId) {
-    char filename[] = "credit.csv";
-    char filePath[20] = "../infra/db/";
+int creditIdExists(int creditId)
+{
+    char filename [] = "credit.csv";
+    char filePath [20] = "../infra/db/";
     strcat(filePath, filename);
 
-    if (fileExists(filePath) != 0)
+    if(fileExists(filePath) !=0)
         return -1;
-    else {
+    else
+    {
         CSV_BUFFER *csvBuffer = csv_create_buffer();
         csv_load(csvBuffer, filePath);
         char id[4] = "";
-        for (int i = 1; i < csvBuffer->rows; ++i) {
+        for (int i = 1; i < csvBuffer->rows; ++i)
+        {
             csv_get_field(id, 4, csvBuffer, i, 0);
-            if (atoi(id) == creditId)
+            if(atoi(id) == creditId)
                 return 0;
         }
         return -1;
     }
 }
 
-int getLineIndexFromCreditId(int creditId) {
-    char filename[] = "credit.csv";
-    char filePath[20] = "../infra/db/";
+int getLineIndexFromCreditId(int creditId)
+{
+    char filename [] = "credit.csv";
+    char filePath [20] = "../infra/db/";
     strcat(filePath, filename);
 
-    if (fileExists(filePath) != 0)
+    if(fileExists(filePath) !=0)
         return -1;
-    else {
+    else
+    {
         CSV_BUFFER *csvBuffer = csv_create_buffer();
         csv_set_field_delim(csvBuffer, ';');
         csv_load(csvBuffer, filePath);
         char id[4] = "";
-        for (int i = 1; i < csvBuffer->rows; ++i) {
+        for (int i = 1; i < csvBuffer->rows; ++i)
+        {
             csv_get_field(id, 4, csvBuffer, i, 0);
-            if (atoi(id) == creditId)
+            if(atoi(id) == creditId)
                 return i;
         }
         return -1;
     }
 }
 
-void writeCreditInfoToLineAt(int lineNumber, credit_t credit, CSV_BUFFER *csvBuffer) {
+void writeCreditInfoToLineAt(int lineNumber, credit_t credit, CSV_BUFFER *csvBuffer)
+{
     char stringBuffer[100] = "";
     itoa(credit.id, stringBuffer, 10);
     csv_set_field(csvBuffer, lineNumber, 0, stringBuffer);//id
@@ -59,8 +66,8 @@ void writeCreditInfoToLineAt(int lineNumber, credit_t credit, CSV_BUFFER *csvBuf
     csv_set_field(csvBuffer, lineNumber, 1, stringBuffer);//client id
     creditStartDateToString(credit.startDate, stringBuffer);
     csv_set_field(csvBuffer, lineNumber, 2, stringBuffer);//credit start date
-    itoa(credit.otherIncomeSources, stringBuffer, 10);
-    csv_set_field(csvBuffer, lineNumber, 3,stringBuffer);//income source
+    ltoa(credit.otherIncomeSources, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 3, stringBuffer);//other income sources
     csv_set_field(csvBuffer, lineNumber, 4, credit.healthState);//health state
     itoa(credit.annualFiscalIncome, stringBuffer, 10);
     csv_set_field(csvBuffer, lineNumber, 5, stringBuffer);//annual fiscal income
@@ -68,30 +75,51 @@ void writeCreditInfoToLineAt(int lineNumber, credit_t credit, CSV_BUFFER *csvBuf
     csv_set_field(csvBuffer, lineNumber, 6, stringBuffer);//annual income
     sprintf(stringBuffer, "%.2f", credit.insuranceCoast);
     csv_set_field(csvBuffer, lineNumber, 7, stringBuffer);//insurance coast
+    sprintf(stringBuffer, "%.2f", credit.taeg);
+    csv_set_field(csvBuffer, lineNumber, 8, stringBuffer);//taeg
+    sprintf(stringBuffer, "%.2f", credit.tmi);
+    csv_set_field(csvBuffer, lineNumber, 9, stringBuffer);//tmi
+    sprintf(stringBuffer, "%.2f", credit.monthlyPayment);
+    csv_set_field(csvBuffer, lineNumber, 10, stringBuffer);//monthly payment
+    sprintf(stringBuffer, "%.2f", credit.interest);
+    csv_set_field(csvBuffer, lineNumber, 11, stringBuffer);//interest
     itoa(credit.availableSaving, stringBuffer, 10);
-    csv_set_field(csvBuffer, lineNumber, 8, stringBuffer);//available saving
-    itoa(credit.monthlySalary, stringBuffer, 10);
-    csv_set_field(csvBuffer, lineNumber, 9, stringBuffer);//montlhlySalary
+    csv_set_field(csvBuffer, lineNumber, 12, stringBuffer);//available saving
+    ltoa(credit.monthlySalary, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 13, stringBuffer);//monthly salary
+    ltoa(credit.otherRebates, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 14, stringBuffer);//other rebates
+    ltoa(credit.monthlyPension, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 15, stringBuffer);//monthly pension
+    ltoa(credit.fixedChargesAmount, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 16, stringBuffer);//fixed charges amount
+    ltoa(credit.cost, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 17, stringBuffer);//cost
+    ltoa(credit.totalRebate, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 18, stringBuffer);//capital
+    itoa(credit.dossierFee, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 19, stringBuffer);//dossier fee
+    itoa(credit.crd, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 20, stringBuffer);//crd
     goodToString(credit.good, stringBuffer);
-    csv_set_field(csvBuffer, lineNumber, 10, stringBuffer);//good
+    csv_set_field(csvBuffer, lineNumber, 21, stringBuffer);//good
     itoa(credit.fiscalResidence, stringBuffer, 10);
-    csv_set_field(csvBuffer, lineNumber, 11, stringBuffer);//fiscal residence
+    csv_set_field(csvBuffer, lineNumber, 22, stringBuffer);//fiscal residence
     itoa(credit.bankRate, stringBuffer, 10);
-    csv_set_field(csvBuffer, lineNumber, 12, stringBuffer);//bank rate
+    csv_set_field(csvBuffer, lineNumber, 23, stringBuffer);//bank rate
     itoa(credit.duration, stringBuffer, 10);
-    csv_set_field(csvBuffer, lineNumber, 13, stringBuffer);//duration
+    csv_set_field(csvBuffer, lineNumber, 24, stringBuffer);//duration
 }
 
-int saveCreditCsv(credit_t credit) {
-    if (&credit == NULL)
-        return -1;
+int saveCreditCsv(credit_t credit)
+{
     CSV_BUFFER *csvBuffer = csv_create_buffer();
     csv_set_field_delim(csvBuffer, ';');
-    char filename[] = "credit.csv";
-    char filePath[20] = "../infra/db/";
+    char filename [] = "credit.csv";
+    char filePath [20] = "../infra/db/";
     strcat(filePath, filename);
 
-    if (fileExists(filePath) != 0)//file doesn't exist
+    if(fileExists(filePath) != 0)//file doesn't exist
     {
         FILE *file = fopen(filePath, "w");
         fclose(file);
@@ -99,42 +127,56 @@ int saveCreditCsv(credit_t credit) {
         csv_set_field(csvBuffer, 0, 0, "id");
         csv_set_field(csvBuffer, 0, 1, "client_id");
         csv_set_field(csvBuffer, 0, 2, "credit_start_date");
-        csv_set_field(csvBuffer, 0, 3, "income_source");
+        csv_set_field(csvBuffer, 0, 3, "other_income_sources");
         csv_set_field(csvBuffer, 0, 4, "health_state");
         csv_set_field(csvBuffer, 0, 5, "annual_fiscal_income");
         csv_set_field(csvBuffer, 0, 6, "annual_income");
         csv_set_field(csvBuffer, 0, 7, "insurance_coast");
-        csv_set_field(csvBuffer, 0, 8, "available_saving");
-        csv_set_field(csvBuffer, 0, 9, "montlhlySalary");
-        csv_set_field(csvBuffer, 0, 10, "good");
-        csv_set_field(csvBuffer, 0, 11, "fiscal_residence");
-        csv_set_field(csvBuffer, 0, 12, "bank_rate");
-        csv_set_field(csvBuffer, 0, 13, "duration");
-    } else {
+        csv_set_field(csvBuffer, 0, 8, "taeg");
+        csv_set_field(csvBuffer, 0, 9, "tmi");
+        csv_set_field(csvBuffer, 0, 10, "monthly_payment");
+        csv_set_field(csvBuffer, 0, 11, "interest");
+        csv_set_field(csvBuffer, 0, 12, "availble_saving");
+        csv_set_field(csvBuffer, 0, 13, "monthly_salary");
+        csv_set_field(csvBuffer, 0, 14, "other_rebates");
+        csv_set_field(csvBuffer, 0, 15, "monthly_pension");
+        csv_set_field(csvBuffer, 0, 16, "fixed_charges_amount");
+        csv_set_field(csvBuffer, 0, 17, "cost");
+        csv_set_field(csvBuffer, 0, 18, "capital");
+        csv_set_field(csvBuffer, 0, 19, "dossier_fee");
+        csv_set_field(csvBuffer, 0, 20, "crd");
+        csv_set_field(csvBuffer, 0, 21, "good");
+        csv_set_field(csvBuffer, 0, 22, "fiscal_residence");
+        csv_set_field(csvBuffer, 0, 23, "bankRate");
+        csv_set_field(csvBuffer, 0, 24, "duration");
+    }
+    else
+    {
         csv_load(csvBuffer, filePath);
     }
 
     int nextLineIndex = csvBuffer->rows + 0;
     writeCreditInfoToLineAt(nextLineIndex, credit, csvBuffer);
 
-    //print_buffer(csvBuffer);
     csv_save(filePath, csvBuffer);
-    //csv_destroy_buffer();
     return 0;
 }
 
-int deleteCreditCsv(int creditId) {
+int deleteCreditCsv(int creditId)
+{
     CSV_BUFFER *csvBuffer = csv_create_buffer();
-    char filename[] = "credit.csv";
-    char filePath[20] = "../infra/db/";
+    char filename [] = "credit.csv";
+    char filePath [20] = "../infra/db/";
     strcat(filePath, filename);
 
-    if (fileExists(filePath) != 0)
+    if(fileExists(filePath) != 0)
         return -1;
-    else {
-        if (creditIdExists(creditId) != 0)
+    else
+    {
+        if(creditIdExists(creditId) != 0)
             return -1;
-        else {
+        else
+        {
             csv_load(csvBuffer, filePath);
             csv_remove_row(csvBuffer, getLineIndexFromCreditId(creditId));
             csv_save(filePath, csvBuffer);
@@ -143,41 +185,48 @@ int deleteCreditCsv(int creditId) {
     return 0;
 }
 
-int updateCreditCsv(credit_t credit) {
+int updateCreditCsv(credit_t credit)
+{
     CSV_BUFFER *csvBuffer = csv_create_buffer();
-    char filename[] = "credit.csv";
-    char filePath[20] = "../infra/db/";
+    char filename [] = "credit.csv";
+    char filePath [20] = "../infra/db/";
     strcat(filePath, filename);
 
-    if (fileExists(filePath) != 0)
+    if(fileExists(filePath) != 0)
         return -1;
-    else {
-        if (creditIdExists(credit.id) != 0)
+    else
+    {
+        if(creditIdExists(credit.id) != 0)
             return -1;
-        else {
+        else
+        {
             int lineIndex = getLineIndexFromCreditId(credit.id);
             csv_load(csvBuffer, filePath);
             csv_clear_row(csvBuffer, lineIndex);
             writeCreditInfoToLineAt(lineIndex, credit, csvBuffer);
+            //print_buffer(csvBuffer);
             csv_save(filePath, csvBuffer);
         }
     }
     return 0;
 }
 
-credit_t *loadCreditCsv(int creditId) {
+credit_t *loadCreditCsv(int creditId)
+{
     CSV_BUFFER *csvBuffer = csv_create_buffer();
     csv_set_field_delim(csvBuffer, ';');
-    char filename[] = "credit.csv";
-    char filePath[20] = "../infra/db/";
+    char filename [] = "credit.csv";
+    char filePath [20] = "../infra/db/";
     strcat(filePath, filename);
 
-    if (fileExists(filePath) != 0)
+    if(fileExists(filePath) != 0)
         return NULL;
-    else {
-        if (creditIdExists(creditId) != 0)
+    else
+    {
+        if(creditIdExists(creditId) != 0)
             return NULL;
-        else {
+        else
+        {
             int lineIndex = getLineIndexFromCreditId(creditId);
             char str[100] = "";
             csv_load(csvBuffer, filePath);
@@ -198,8 +247,8 @@ credit_t *loadCreditCsv(int creditId) {
             };
             time_t rawTime = mktime(&t);
             credit->startDate = rawTime;
-            csv_get_field(str, 99, csvBuffer, lineIndex, 3);//income sources
-            credit->otherIncomeSources = atol(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 3);//other income sources
+            credit->otherIncomeSources = atol(str);;
             csv_get_field(str, 99, csvBuffer, lineIndex, 4);//health state
             credit->healthState = malloc(50 * sizeof(char));
             strcpy(credit->healthState, str);
@@ -209,27 +258,34 @@ credit_t *loadCreditCsv(int creditId) {
             credit->annualFiscalIncome = atol(str);
             csv_get_field(str, 99, csvBuffer, lineIndex, 7);//insurance coast
             credit->insuranceCoast = atof(str);
-            csv_get_field(str, 99, csvBuffer, lineIndex, 8);//available saving
+            csv_get_field(str, 99, csvBuffer, lineIndex, 8);//taeg
+            credit->taeg = atof(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 9);//tmi
+            credit->tmi = atof(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 10);//monthly payment
+            credit->monthlyPayment = atof(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 11);//interest
+            credit->interest = atof(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 12);//available saving
             credit->availableSaving = atoi(str);
-            csv_get_field(str, 99, csvBuffer, lineIndex, 9);//montlhlySalary
+            csv_get_field(str, 99, csvBuffer, lineIndex, 13);//monthlySalary
             credit->monthlySalary = atol(str);
-            csv_get_field(str, 99, csvBuffer, lineIndex, 10);//good
+            csv_get_field(str, 99, csvBuffer, lineIndex, 21);//good
             char **goodTokens = str_split(str, ' ');
             good_t good;
-            memset(good.type, 0, 19);
             strcpy(good.type, *(goodTokens + 0));
-            good.origin = malloc(20 * sizeof(char));
+            good.origin = malloc(50 * sizeof(char));
             strcpy(good.origin, *(goodTokens + 1));
             good.value = atoi(*(goodTokens + 2));
             credit->good = good;
-            csv_get_field(str, 99, csvBuffer, lineIndex, 11);//fiscal residence
+            csv_get_field(str, 99, csvBuffer, lineIndex, 22);//fiscal residence
             credit->fiscalResidence = atoi(str);
-            csv_get_field(str, 99, csvBuffer, lineIndex, 12);//bank rate
+            csv_get_field(str, 99, csvBuffer, lineIndex, 23);//bank rate
             credit->bankRate = atoi(str);
-            csv_get_field(str, 99, csvBuffer, lineIndex, 13);//duration
+            csv_get_field(str, 99, csvBuffer, lineIndex, 24);//duration
             credit->duration = atoi(str);
 
-            return credit;
+            return  credit;
 
         }
     }

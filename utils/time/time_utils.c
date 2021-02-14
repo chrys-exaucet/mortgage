@@ -57,20 +57,20 @@ struct tm addMonthInStruct(struct tm d, int months) {
 }
 
 time_t addMonthsToDate(const time_t date, int months) {
-    struct tm d;
-    localtime_s(&d, &date);
-    struct tm result = addMonthInStruct(d, months);
+    struct tm *d;
+    d = localtime(&date);
+    struct tm result = addMonthInStruct(*d, months);
     return mktime(&result);
 }
 
 
 int getYearDiff(time_t date1, time_t date2) {
 
-    struct tm d1;
-    struct tm d2;
-    localtime_s(&d1, &date1);
-    localtime_s(&d2, &date2);
-    return d1.tm_year - d2.tm_year;
+    struct tm *d1;
+    struct tm *d2;
+    d1 = localtime(&date1);
+    d2 = localtime(&date2);
+    return d1->tm_year - d2->tm_year;
 }
 
 

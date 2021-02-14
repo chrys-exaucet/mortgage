@@ -12,7 +12,7 @@
 #include "../../infra/io/crud/credit_crud.h"
 
 void creditStartDateToString(time_t creditStartDate, char *creditStartDateStr) {
-    sprintf(creditStartDateStr, "%s", ctime(&creditStartDate));
+    strftime(creditStartDateStr, 99, "%d/%m/%Y", gmtime(&creditStartDate));
     //Deleting eventual new line char
     char *p = strchr(creditStartDateStr, '\n');
     if (p != NULL) {
@@ -164,7 +164,7 @@ void readGood(char *buffer, credit_t *credit) {
 
 void readOtherIncomeSources(char *buffer, credit_t *credit) {
     credit->otherIncomeSources = 0;
-    printf("\nAvez vous d'autres revenus sur l'année "
+    printf("\nAvez vous d'autres revenus sur l'annee "
            "(primes, bonus, salaires variables, gains poker, paris sportifs, pensions alimentaires)? "
            "Si, oui, veuillez entrer le montant "
            "(en Euros), Sinon, entrez O : ");
@@ -260,7 +260,7 @@ int readAvailableSaving(char *buffer, credit_t *credit) {
     printf("\nMontant d'epargne disponible (Montant de l'apport personnel) :");
     readString(buffer, 10);
     float availableSaving = atoi(buffer);
-    if (availableSaving >= credit->good.value * 0.1) {
+    if (availableSaving <= credit->good.value * 0.1) {
         printf("\n Votre epargne personnel vous permet pas d'obtenir le financement necessaire à l'octroi de ce credit immobilier");
         return 1;
     }

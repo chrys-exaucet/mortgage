@@ -69,7 +69,7 @@ void printClient(client_t c);
 void printClients();
 
 //TODO just for test
-void printAmortizationTable(int clientId);
+void printAmortizationTable();
 void saveAmortizationTable(int clientId);
 
 #endif //MORTGAGE_CLIENT_H

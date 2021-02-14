@@ -21,7 +21,7 @@ void run() {
     printf("*\t2. Modifier un client\t\t\t\t\t\t\t*\n");
     printf("*\t3. Supprimer un client\t\t\t\t\t\t\t*\n");
     printf("*\t4. Octroyer un credit\t\t\t\t\t\t\t*\n");
-    printf("*\t5. Afficher le Capital restant\t\t\t\t\t\t*\n");
+    printf("*\t5. Afficher le capital restant\t\t\t\t\t\t*\n");
     printf("*\t6. Afficher le tableau d'amortissement du credit\t\t\t*\n");
     printf("*\t0. Quitter\t\t\t\t\t\t\t\t*\n");
     printf("*********************************************************************************\n");
@@ -77,7 +77,7 @@ void run() {
 
             case 6:
                 system("cls");
-                printCushioningRate();
+                printAmortizationTable();
                 system("pause");
                 break;
         }
@@ -88,14 +88,10 @@ void run() {
 }
 
 void printRemainingCapital() {
-    // TODO: Remaining Capital
-    printf("Print remaining totalRebate\n");
+    // TODO: capital
+    printf("Print remaining capital\n");
 }
 
-void printCushioningRate() {
-    // TODO: Caushioning Rate
-    printf("Print cushioning rate\n");
-}
 
 void printMenuHeader() {
     FILE *file = fopen("../cli/menu_header", "r");
@@ -119,6 +115,7 @@ int isNumberInList(const int number, const int list[], const int listSize) {
 
 void exitMenu() {
     printf(" A bientot sur Mortgage!\n");
+    system("pause");
     system("exit");
 }
 
