@@ -649,9 +649,7 @@ void printRemainingCapital() {
     }
 
     int remainingMonths = credit->duration * 12 - monthDiff;
-        printf("\n###BEFORE\n");
-    float crd = getCRD(*credit, remainingMonths);
-        printf("\n###AFTER\n");
+    float crd = getCRD(*credit, monthDiff);
     printf("  Capital Restant Du: %.2f \n", crd);
     printf("  Mensualites restant a payer payer:  %d\n", remainingMonths);
 

@@ -497,6 +497,19 @@ float getCRD(credit_t credit, int month) {
         return getCRD(credit, month - 1) - getCapital(credit, month - 1);
 }
 
+/*float getCRD(credit_t credit, int month)
+{
+    if(month == 0)
+        return credit.crd;
+    float crd = credit.crd;
+
+    for (int i = 0; i < month; ++i)
+    {
+        crd += crd - getCapital(credit, i);
+    }
+    return  crd;
+}*/
+
 float getInterest(credit_t credit, int month) {
     return getCRD(credit, month) * getCurrentCreditTax(credit);
 }

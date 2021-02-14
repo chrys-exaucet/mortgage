@@ -270,6 +270,20 @@ credit_t *loadCreditCsv(int creditId)
             credit->availableSaving = atoi(str);
             csv_get_field(str, 99, csvBuffer, lineIndex, 13);//monthlySalary
             credit->monthlySalary = atol(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 14);//other rebates
+            credit->otherRebates = atol(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 15);//monthly pension
+            credit->monthlyPension = atol(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 16);//fixed charges amount
+            credit->fixedChargesAmount = atol(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 17);//cost
+            credit->cost = atol(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 18);//total rebate
+            credit->totalRebate = atol(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 19);//dossier fee
+            credit->dossierFee = atoi(str);
+            csv_get_field(str, 99, csvBuffer, lineIndex, 20);//crd
+            credit->crd = atol(str);
             csv_get_field(str, 99, csvBuffer, lineIndex, 21);//good
             char **goodTokens = str_split(str, ' ');
             good_t good;
@@ -289,5 +303,4 @@ credit_t *loadCreditCsv(int creditId)
 
         }
     }
-    return NULL;
 }
