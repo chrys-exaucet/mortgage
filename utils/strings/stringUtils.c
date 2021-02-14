@@ -3,7 +3,7 @@
 //
 
 //
-// updated by @roy on  2/12/2021.
+// updated by Roy on  2/12/2021.
 //
 
 #include <stdio.h>
@@ -62,7 +62,6 @@ char** str_split(char* a_str,  char a_delim)
             }
 
         }
-        //assert(idx == count - 1);
         if(idx == count - 1)
             *(result + idx) = 0;
     }

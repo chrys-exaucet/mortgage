@@ -9,6 +9,7 @@ typedef struct Good{
     char type[20];
     char *origin;
     unsigned int value;
+    unsigned long cost;
 }good_t;
 
 

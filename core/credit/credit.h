@@ -30,14 +30,24 @@ typedef struct Credit {
     int id;
     int clientId;
     time_t startDate;
-    char *incomeSources;
+    unsigned long otherIncomeSources;
     char *healthState;
     unsigned long annualFiscalIncome;
     unsigned long annualIncome;
     float insuranceCoast;
+    float taeg;
+    float tmi;
+    float monthlyPayment;
+    float interest;
     unsigned int availableSaving;
-    // Monthly salary in Euros
-    unsigned long salary;
+    unsigned long monthlySalary;
+    unsigned long otherRebates;
+    unsigned long monthlyPension;
+    unsigned long fixedChargesAmount;
+    unsigned long cost;
+    unsigned long totalRebate;
+    unsigned int dossierFee;
+    unsigned long crd;
     struct Good good;
     enum FiscalResidence fiscalResidence;
     enum BankRate bankRate;
@@ -45,25 +55,43 @@ typedef struct Credit {
 
 } credit_t;
 
-credit_t getClientCredit(int clientId, int creditId);
-
-double getTimeToLive();
-
-unsigned long getAnnualIncomes(int salary);
-
-int isEligible(int clientId);
-
-int isStatusValid(enum ClientStatus clientStatus, char args[]);
-
-int isSalaryValid(unsigned int salary);
-
-int isFiscalRevenueValid(unsigned long revenue);
-
 
 void creditStartDateToString(time_t creditStartDate, char *creditStartDateStr);
 
 void goodToString(good_t good, char *goodStr);
 
 credit_t *createCredit();
+
+// Amortization table related
+
+// tax
+time_t getDateIncrementedByMonths(time_t date, int monthsNumber);
+
+float getFixedCreditTax();
+
+float getCapedCreditTax(credit_t credit);
+
+float getVariableCreditTax(credit_t credit);
+
+float getCurrentCreditTax(credit_t credit);
+
+float getInsurenceTax(credit_t credit);
+
+
+// crd related
+float getTAEG(credit_t credit);
+
+float getTMI(credit_t credit);
+
+float getCreditCost(credit_t credit);
+
+float getInterest(credit_t credit, int month);
+
+float getTotalRebate(credit_t credit);
+
+float getCapital(credit_t credit, int month);
+
+float getCRD(credit_t credit, int month);
+
 
 #endif //MORTGAGE_CREDIT_H

@@ -7,6 +7,7 @@
 #include "menu.h"
 #include "../../core/client/client.h"
 #include "../../utils/strings/stringUtils.h"
+#include "../../core/credit/credit.h"
 
 
 void run() {
@@ -20,7 +21,7 @@ void run() {
     printf("*\t2. Modifier un client\t\t\t\t\t\t\t*\n");
     printf("*\t3. Supprimer un client\t\t\t\t\t\t\t*\n");
     printf("*\t4. Octroyer un credit\t\t\t\t\t\t\t*\n");
-    printf("*\t5. Afficher le capital restant\t\t\t\t\t\t*\n");
+    printf("*\t5. Afficher le Capital restant\t\t\t\t\t\t*\n");
     printf("*\t6. Afficher le tableau d'amortissement du credit\t\t\t*\n");
     printf("*\t0. Quitter\t\t\t\t\t\t\t\t*\n");
     printf("*********************************************************************************\n");
@@ -64,7 +65,7 @@ void run() {
 
             case 4:
                 system("cls");
-                grantCredit();
+                createCredit();
                 system("pause");
                 break;
 
@@ -86,17 +87,13 @@ void run() {
 
 }
 
-void grantCredit() {
-    // TODO: credit
-    printf("Grant credit\n");
-}
-
 void printRemainingCapital() {
-    // TODO: capital
-    printf("Print remaining capital\n");
+    // TODO: Remaining Capital
+    printf("Print remaining totalRebate\n");
 }
 
 void printCushioningRate() {
+    // TODO: Caushioning Rate
     printf("Print cushioning rate\n");
 }
 

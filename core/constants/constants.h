@@ -5,8 +5,9 @@
 #ifndef MORTGAGE_CONSTANTS_H
 #define MORTGAGE_CONSTANTS_H
 
+
 // IBAN related
-extern  int lastAccountNumber;
+extern int lastAccountNumber;
 extern int lastKey;
 
 #define DEFAULT_IBAN_START  "FR21"
@@ -19,7 +20,8 @@ extern int lastKey;
 
 
 // Bank related
-#define FIXED_BANK_RATE  0.0095
+#define EURIBOR_FIXED_BANK_RATE  0.0095
+#define VARIABLE_BANK_RATE  0.15
 #define CAPED_BANK_RATE_LIMIT  0.10
 #define DEFAULT_NOTARY_FEE  15000
 

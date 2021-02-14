@@ -98,9 +98,7 @@ client_t *createClient() {
 
     readAddress(buffer, client);
 
-    // TODO: creditDate : default attribution for now just for tests purpose
-    struct tm t = {0, 0, 0, 13, 2 - 1, 2021 - 1900};
-    time_t creditDate = mktime(&t);
+    time_t creditDate = time(0);
     printf("\nDate d'obtention du credit : 13/02/2021");
     client->creditDate = creditDate;
 
@@ -196,19 +194,6 @@ iban_t createIBAN() {
 
     return iban;
 }
-
-void getTAC() {
-
-    // TODO
-}
-
-int getCRD(time_t date, int dueMonths) {
-
-    // TODO
-    return dueMonths;
-}
-
-
 void ibanToString(iban_t iban, char *ibanStr) {
     sprintf(ibanStr, "%s %d %d %ld %d", iban.start,
             iban.bankCode, iban.agencyCode, iban.accountNumber,
@@ -232,7 +217,7 @@ void creditDateToString(time_t creditDate, char *creditDateStr) {
 
 void printIban(iban_t i) {
     printf("IBAN : ");
-    printf("%s %d %d %ld %d %ld\n", i.start,
+    printf("%s %d %d %ld %d \n", i.start,
            i.bankCode, i.agencyCode, i.accountNumber,
            i.key);
 }

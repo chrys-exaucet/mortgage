@@ -25,14 +25,12 @@ enum ClientStatus {
 };
 
 typedef struct IBAN {
-    char * start;
+    char *start;
     unsigned int bankCode;
     unsigned int agencyCode;
     unsigned long accountNumber;
     unsigned int key;
 } iban_t;
-
-
 
 
 typedef struct Client {
@@ -47,17 +45,14 @@ typedef struct Client {
     enum ClientStatus status;
 } client_t;
 
-iban_t createIBAN();
 
 client_t *createClient();
+
+iban_t createIBAN();
 
 void deleteClient();
 
 void updateClient();
-
-void getTAC();
-
-int getCRD(time_t date, int dueMonths);
 
 void ibanToString(iban_t iban, char *ibanStr);
 
@@ -65,7 +60,9 @@ void addressToString(address_t address, char *addressStr);
 
 void creditDateToString(time_t creditDate, char *creditDateStr);
 
-void demandStatusToString(int demandStatus, char *demandStatusStr);
+void getClientStatusStr(enum ClientStatus clientStatus, char *clientStatusStr);
+
+void getDemandStatusStr(int demandStatus, char *demandStatusStr);
 
 void printClient(client_t c);
 
