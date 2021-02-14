@@ -152,7 +152,6 @@ int updateClientCsv(client_t client) {
 client_t *loadClientCsv(int clientId) {
     CSV_BUFFER *csvBuffer = csv_create_buffer();
     csv_set_field_delim(csvBuffer, ';');
-    csv_set_field_delim(csvBuffer, ';');
     char filename[] = "client.csv";
     char filePath[20] = "../infra/db/";
     strcat(filePath, filename);
@@ -182,13 +181,14 @@ client_t *loadClientCsv(int clientId) {
             csv_get_field(str, 99, csvBuffer, lineIndex, 4);//iban
             char **ibanTokens = str_split(str, ' ');
             iban_t iban = {
-                    (char *) (ibanTokens + 1),
+                    0,
+                    atoi(*(ibanTokens + 1)),
                     atoi(*(ibanTokens + 2)),
                     atol(*(ibanTokens + 3)),
-                    atoi(*(ibanTokens + 4)),
-                    0
+                    atoi(*(ibanTokens + 4))
             };
-            strcpy((char *) iban.start, *(ibanTokens + 0));
+            iban.start = malloc(8 * sizeof(char));
+            strcpy(iban.start, *(ibanTokens + 0));
             client->iban = iban;
 
             csv_get_field(str, 99, csvBuffer, lineIndex, 5);//address

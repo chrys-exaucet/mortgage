@@ -13,13 +13,12 @@
 
 void creditStartDateToString(time_t creditStartDate, char *creditStartDateStr)
 {
-    sprintf(creditStartDateStr, "%s", ctime(&creditStartDate));
+    strftime(creditStartDateStr, 99, "%d/%m/%Y", gmtime(&creditStartDate));
     //Deleting eventual new line char
     char *p = strchr(creditStartDateStr, '\n');
     if(p !=NULL)
     {
         *p = '\0';
-        //*(p + 1) = '\0';
     }
 }
 
@@ -122,15 +121,16 @@ void readHealthState(char *buffer, credit_t *credit)
     readString(buffer, 3);
     switch (atoi(buffer))
     {
+        default:
+            strcpy(credit->healthState, "Bien portant");
+            break;
         case 1:
             strcpy(credit->healthState, "Bien portant");
             break;
         case 2:
             strcpy(credit->healthState, "Pathologie grave");
             break;
-        default:
-            strcpy(credit->healthState, "Bien portant");
-            break;
+
     }
 }
 
@@ -162,7 +162,7 @@ int readAvailableSaving(char *buffer, credit_t *credit)
     printf("\nMontant d'epargne disponible :");
     readString(buffer, 10);
     unsigned int availableSaving = atoi(buffer);
-    //Logic to implement later
+    //TODO: Logic to implement later
     return 0;
 }
 
@@ -274,10 +274,10 @@ int readFiscalResidence(char *buffer, credit_t *credit)
             credit->fiscalResidence = FRANCE;
             return 0;
         case 2:
-            credit->bankRate = EU;
+            credit->fiscalResidence = EU;
             return 0;
         case 3:
-            credit->bankRate = NOT_EU;
+            credit->fiscalResidence = NOT_EU;
             printf("\nCredit non octroye (hors UE)\n");
             return -1;
         default:

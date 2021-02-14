@@ -12,6 +12,7 @@
 #include "../../infra/io/parser.csv/csv.h"
 #include "../../utils/file/file_utils.h"
 #include "../../infra/io/crud/client_crud.h"
+#include "../../infra/io/crud/credit_crud.h"
 #include <string.h>
 #include <stdio.h>
 #include <malloc.h>
@@ -60,7 +61,7 @@ void readAddress(char *buffer, client_t *client) {
 
 void readStatus(char *buffer, client_t *client) {
     //client status
-    printf("\nStatut (0. Non salarie, 1. CDD, 2. Interim, 3. Liberal, 4. CDI, 5. CDI valide, 6. CDI essai) : ");
+    printf("\nStatut (0. Non salarie, 1. CDD, 2. Interim, 3. Liberal, 4. CDI valide, 5. CDI essai) : ");
     readString(buffer, 50);
     client->status = atoi(buffer);
 }
@@ -85,7 +86,6 @@ client_t *createClient() {
     client->lastName = malloc(50 * sizeof(char));
 
     char buffer[50] = "";
-    int isReadingOk;
     printf("*Creation d'un client*\n\n");
 
     readClientId(buffer, client);
@@ -137,6 +137,8 @@ void updateClient() {
     int id = atoi(buffer);
     client_t *client = loadClientCsv(id);
     if (clientIdExists(id) != 0) {
+        if(id == -1)
+            return;
         printf("\nDesole, ce client n'existe pas.\n");
         printf("Echec de la modification");
         return;
@@ -148,6 +150,7 @@ void updateClient() {
     printf("\t3. Date de naissance\n");
     printf("\t4. Adresse\n");
     printf("\t5. Statut\n");
+    printf("\tVotre choix :");
     readString(buffer, 5);
     int choice = atoi(buffer);
     switch (choice) {
@@ -185,8 +188,8 @@ iban_t createIBAN() {
     iban.accountNumber = lastAccountNumber + DEFAULT_ACCOUNT_NUMBER_INCREMENT;
     iban.key = lastKey + DEFAULT_KEY_INCREMENT;
 
-    lastAccountNumber += iban.accountNumber;
-    lastKey += iban.key;
+    lastAccountNumber = iban.accountNumber;
+    lastKey = iban.key;
 
     if (lastKey == 99)
         lastKey = DEFAULT_KEY;
@@ -195,12 +198,14 @@ iban_t createIBAN() {
 }
 
 void getTAC() {
-    // TODO: getTAC
+
+    // TODO
 }
 
 int getCRD(time_t date, int dueMonths) {
-    // TODO: getCRD
-    return 0;
+
+    // TODO
+    return dueMonths;
 }
 
 
@@ -227,7 +232,7 @@ void creditDateToString(time_t creditDate, char *creditDateStr) {
 
 void printIban(iban_t i) {
     printf("IBAN : ");
-    printf("%s %d %d %ld %d \n", i.start,
+    printf("%s %d %d %ld %d %ld\n", i.start,
            i.bankCode, i.agencyCode, i.accountNumber,
            i.key);
 }
@@ -235,14 +240,14 @@ void printIban(iban_t i) {
 void printAddress(address_t a) {
     char roadType[20] = "";
     switch (a.road.type) {
-        case 0:
+        case LARGE:
             strcpy(roadType, "Boulevard");
             break;
-        case 1:
+        case SMALL:
             strcpy(roadType, "Route");
             break;
 
-        case 2:
+        case EMPTY:
         default:
             break;
     }
@@ -260,13 +265,13 @@ void printTime(time_t t) {
 
 void getDemandStatusStr(enum DemandStatus demandStatus, char *demandStatusStr) {
     switch (demandStatus) {
-        case -1:
+        case DENIED:
             strcpy(demandStatusStr, " refusee");
             break;
-        case 0:
+        case PENDING:
             strcpy(demandStatusStr, " attente");
             break;
-        case 1:
+        case ACCEPTED:
             strcpy(demandStatusStr, " acceptee");
             break;
         default:
@@ -278,22 +283,22 @@ void getDemandStatusStr(enum DemandStatus demandStatus, char *demandStatusStr) {
 
 void getClientStatusStr(enum ClientStatus clientStatus, char *clientStatusStr) {
     switch (clientStatus) {
-        case 0:
+        case PRO_UNEMPLOYED:
             strcpy(clientStatusStr, "Non salarie");
             break;
-        case 1:
+        case PRO_CDD:
             strcpy(clientStatusStr, "CDD");
             break;
-        case 2:
+        case PRO_INTERIM:
             strcpy(clientStatusStr, "Interim");
             break;
-        case 3:
+        case PRO_LIBERAL:
             strcpy(clientStatusStr, "Liberal");
             break;
-        case 4:
+        case CDI_VALIDATED:
             strcpy(clientStatusStr, "CDI valide");
             break;
-        case 5:
+        case CDI_ESSAY:
             strcpy(clientStatusStr, "CDI essai");
             break;
         default:
@@ -370,5 +375,191 @@ void printClients() {
         printf("---------------+");
         printf("\n\n");
     }
+}
+
+int getCreditId(int clientId)
+{
+    CSV_BUFFER *csvBuffer = csv_create_buffer();
+    csv_set_field_delim(csvBuffer, ';');
+    char filePath[] = "../infra/db/credit.csv";
+    if(fileExists(filePath) != 0)
+        return -1;
+    csv_load(csvBuffer, filePath);
+    int retrievedClientId = 0;
+    char stringBuffer[4] = "";
+    for (int i = 1; i < csvBuffer->rows; ++i)
+    {
+        csv_get_field(stringBuffer, 3, csvBuffer, i, 1);
+        retrievedClientId = atoi(stringBuffer);
+        if(clientId == retrievedClientId)
+        {
+            csv_get_field(stringBuffer, 3, csvBuffer, i, 0);
+            return atoi(stringBuffer);
+        }
+    }
+    return -1;
+}
+
+
+
+void printAmortizationTable(int clientId)
+{
+    client_t *client = loadClientCsv(clientId);
+    int creditId = getCreditId(clientId);
+    credit_t *credit = loadCreditCsv(creditId);
+    char buffer[50] = "";
+
+    /*char filePath[100] = "../infra/io/amortization_table/";
+    char idStr[4] = "";
+    char lineWriter[110] = "";
+    strcat(filePath, itoa(client->id, idStr, 10));
+    strcat(filePath, "_");
+    strcat(filePath, client->firstName);
+    strcat(filePath, "_");
+    strcat(filePath, client->lastName);
+    strcat(filePath, ".txt");
+    FILE *f = fopen(filePath, "w");*/
+
+
+    printf("\n%57s\n", "Tableau d'amortissement");
+    printf("+-------------------");
+    printf("--------------------");
+    printf("--------------------");
+    printf("--------------------");
+    printf("---------------+");
+    printf("\n");
+
+    creditStartDateToString(credit->startDate, buffer);
+    printf("| Nom  : %14s %s | %s : %11s | %s %13s |\n", client->firstName,
+           client->lastName,"Date de naissance",
+           client->birthday, "Date du pret :", buffer);
+
+    ibanToString(client->iban, buffer);
+    printf("| IBAN : %20s | %s %15.2f%% | %s %15d %s |\n",
+           buffer, "Taux du pret :", 1.90, "Duree :", credit->duration * 12, "mois");
+
+    printf("| Assurance : %14.2f%% | %s %15.2f | %s %12.2f |\n", 0.30,
+           "Mensualite HA :", 1005.61, "Mensualite AC :", 1065.61);
+
+    printf("+-------------------");
+    printf("--------------------");
+    printf("--------------------");
+    printf("--------------------");
+    printf("---------------+");
+    printf("\n");
+    printf("+-------------------");
+    printf("--------------------");
+    printf("--------------------");
+    printf("--------------------");
+    printf("---------------+");
+    printf("\n");
+
+    printf("| %6s | %13s | %14s | %14s | %15s | %15s |\n",
+           "Mois", "Date", "Interets", "Capital", "Mensualite", "CRD");
+    printf("+-------------------");
+    printf("--------------------");
+    printf("--------------------");
+    printf("--------------------");
+    printf("---------------+");
+    printf("\n");
+
+    //Line pattern to repeat for each month
+    printf("| %6d | %13s | %14.2f | %14.2f | %15.2f | %15.2f |\n",
+           1, "01/02/2021", 380.0, 625.61, 1005.61, 239374.39);
+
+
+    //Footer
+    printf("+-------------------");
+    printf("--------------------");
+    printf("--------------------");
+    printf("--------------------");
+    printf("---------------+");
+    printf("\n");
+
+}
+
+void saveAmortizationTable(int clientId)
+{
+    client_t *client = loadClientCsv(clientId);
+    int creditId = getCreditId(clientId);
+    credit_t *credit = loadCreditCsv(creditId);
+    char buffer[50] = "";
+
+    char filePath[150] = "../infra/io/amortization_table/";
+    char idStr[4] = "";
+    char lineWriter[110] = "";
+    strcat(filePath, itoa(client->id, idStr, 10));
+    strcat(filePath, "_");
+    strcpy(buffer, client->firstName);
+    stringToLower(buffer);
+    strcat(filePath, buffer);
+    strcat(filePath, "_");
+    strcpy(buffer, client->lastName);
+    stringToLower(buffer);
+    strcat(filePath, buffer);
+    strcat(filePath, "_");
+    strcat(filePath, "amortization_table");
+    strcat(filePath, ".txt");
+    FILE *file = fopen(filePath, "w");
+
+
+    fprintf(file,"\n%57s\n", "Tableau d'amortissement");
+    fprintf(file,"+-------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"---------------+");
+    fprintf(file,"\n");
+
+    creditStartDateToString(credit->startDate, buffer);
+    fprintf(file,"| Nom  : %14s %s | %s : %11s | %s %13s |\n", client->firstName,
+            client->lastName,"Date de naissance",
+            client->birthday, "Date du pret :", buffer);
+
+    ibanToString(client->iban, buffer);
+    fprintf(file,"| IBAN : %20s | %s %15.2f%% | %s %15d %s |\n",
+            buffer, "Taux du pret :", 1.90, "Duree :", credit->duration * 12, "mois");
+
+    fprintf(file,"| Assurance : %14.2f%% | %s %15.2f | %s %12.2f |\n", 0.30,
+            "Mensualite HA :", 1005.61, "Mensualite AC :", 1065.61);
+
+    fprintf(file,"+-------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"---------------+");
+    fprintf(file,"\n");
+    fprintf(file,"+-------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"---------------+");
+    fprintf(file,"\n");
+
+    fprintf(file,"| %6s | %13s | %14s | %14s | %15s | %15s |\n",
+            "Mois", "Date", "Interets", "Capital", "Mensualite", "CRD");
+    fprintf(file,"+-------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"---------------+");
+    fprintf(file,"\n");
+
+    //Line pattern to repeat for each month
+    fprintf(file,"| %6d | %13s | %14.2f | %14.2f | %15.2f | %15.2f |\n",
+            1, "01/02/2021", 380.0, 625.61, 1005.61, 239374.39);
+
+
+    //Footer
+    fprintf(file,"+-------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"--------------------");
+    fprintf(file,"---------------+");
+    fprintf(file,"\n");
+
+    free(client);
+    free(credit);
+
 }
 

@@ -59,39 +59,33 @@ int getLineIndexFromCreditId(int creditId)
 
 void writeCreditInfoToLineAt(int lineNumber, credit_t credit, CSV_BUFFER *csvBuffer)
 {
-    if(&credit == NULL)
-        return;
-    else
-    {
-        char stringBuffer[100] = "";
-        itoa(credit.id, stringBuffer, 10);
-        csv_set_field(csvBuffer, lineNumber, 0, stringBuffer);//id
-        itoa(credit.clientId, stringBuffer, 10);
-        csv_set_field(csvBuffer, lineNumber, 1, stringBuffer);//client id
-        creditStartDateToString(credit.startDate, stringBuffer);
-        csv_set_field(csvBuffer, lineNumber, 2, stringBuffer);//credit start date
-        csv_set_field(csvBuffer, lineNumber, 3, credit.incomeSources);//income source
-        csv_set_field(csvBuffer, lineNumber, 4, credit.healthState);//health state
-        itoa(credit.annualFiscalIncome, stringBuffer, 10);
-        csv_set_field(csvBuffer, lineNumber, 5, stringBuffer);//annual fiscal income
-        itoa(credit.annualIncome, stringBuffer, 10);
-        csv_set_field(csvBuffer, lineNumber, 6, stringBuffer);//annual income
-        sprintf(stringBuffer, "%.2f", credit.insuranceCoast);
-        csv_set_field(csvBuffer, lineNumber, 7, stringBuffer);//insurance coast
-        itoa(credit.availableSaving, stringBuffer, 10);
-        csv_set_field(csvBuffer, lineNumber, 8, stringBuffer);//available saving
-        itoa(credit.salary, stringBuffer, 10);
-        csv_set_field(csvBuffer, lineNumber, 9, stringBuffer);//salary
-        goodToString(credit.good, stringBuffer);
-        csv_set_field(csvBuffer, lineNumber, 10, stringBuffer);//good
-        itoa(credit.fiscalResidence, stringBuffer, 10);
-        csv_set_field(csvBuffer, lineNumber, 11, stringBuffer);//fiscal residence
-        itoa(credit.bankRate, stringBuffer, 10);
-        csv_set_field(csvBuffer, lineNumber, 12, stringBuffer);//bank rate
-        itoa(credit.duration, stringBuffer, 10);
-        csv_set_field(csvBuffer, lineNumber, 13, stringBuffer);//duration
-
-    }
+    char stringBuffer[100] = "";
+    itoa(credit.id, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 0, stringBuffer);//id
+    itoa(credit.clientId, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 1, stringBuffer);//client id
+    creditStartDateToString(credit.startDate, stringBuffer);
+    csv_set_field(csvBuffer, lineNumber, 2, stringBuffer);//credit start date
+    csv_set_field(csvBuffer, lineNumber, 3, credit.incomeSources);//income source
+    csv_set_field(csvBuffer, lineNumber, 4, credit.healthState);//health state
+    itoa(credit.annualFiscalIncome, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 5, stringBuffer);//annual fiscal income
+    itoa(credit.annualIncome, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 6, stringBuffer);//annual income
+    sprintf(stringBuffer, "%.2f", credit.insuranceCoast);
+    csv_set_field(csvBuffer, lineNumber, 7, stringBuffer);//insurance coast
+    itoa(credit.availableSaving, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 8, stringBuffer);//available saving
+    itoa(credit.salary, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 9, stringBuffer);//salary
+    goodToString(credit.good, stringBuffer);
+    csv_set_field(csvBuffer, lineNumber, 10, stringBuffer);//good
+    itoa(credit.fiscalResidence, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 11, stringBuffer);//fiscal residence
+    itoa(credit.bankRate, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 12, stringBuffer);//bank rate
+    itoa(credit.duration, stringBuffer, 10);
+    csv_set_field(csvBuffer, lineNumber, 13, stringBuffer);//duration
 }
 
 int saveCreditCsv(credit_t credit)
@@ -190,6 +184,7 @@ int updateCreditCsv(credit_t credit)
 credit_t *loadCreditCsv(int creditId)
 {
     CSV_BUFFER *csvBuffer = csv_create_buffer();
+    csv_set_field_delim(csvBuffer, ';');
     char filename [] = "credit.csv";
     char filePath [20] = "../infra/db/";
     strcat(filePath, filename);
@@ -241,8 +236,9 @@ credit_t *loadCreditCsv(int creditId)
             csv_get_field(str, 99, csvBuffer, lineIndex, 10);//good
             char **goodTokens = str_split(str, ' ');
             good_t good;
+            memset(good.type, 0, 19);
             strcpy(good.type, *(goodTokens + 0));
-            good.origin = malloc(50 * sizeof(char));
+            good.origin = malloc(20 * sizeof(char));
             strcpy(good.origin, *(goodTokens + 1));
             good.value = atoi(*(goodTokens + 2));
             credit->good = good;

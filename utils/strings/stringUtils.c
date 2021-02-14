@@ -10,6 +10,7 @@
 #include <stddef.h>
 #include <malloc.h>
 #include <string.h>
+#include <ctype.h>
 #include "stringUtils.h"
 
 /*
@@ -103,5 +104,15 @@ int readString(char *string, int length)
     {
         cleanBuffer();
         return 0;
+    }
+}
+
+void stringToLower(char *string)
+{
+    int i = 0;
+    while (string[i] != '\0')
+    {
+        string[i] = tolower(string[i]);
+        i++;
     }
 }
