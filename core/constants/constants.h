@@ -1,0 +1,33 @@
+//
+// Created by @chrys on 2/11/2021.
+//
+
+#ifndef MORTGAGE_CONSTANTS_H
+#define MORTGAGE_CONSTANTS_H
+
+
+// IBAN related
+extern int lastAccountNumber;
+extern int lastKey;
+
+#define DEFAULT_IBAN_START  "FR21"
+#define DEFAULT_BANK_CODE  30001
+#define DEFAULT_AGENCY_CODE  00021
+#define DEFAULT_ACCOUNT_NUMBER  0000000001
+#define DEFAULT_ACCOUNT_NUMBER_INCREMENT  2
+#define DEFAULT_KEY  10
+#define DEFAULT_KEY_INCREMENT  2
+
+
+// Bank related
+#define EURIBOR_FIXED_BANK_RATE  0.0095
+#define VARIABLE_BANK_RATE  0.15
+#define CAPED_BANK_RATE_LIMIT  0.10
+#define DEFAULT_NOTARY_FEE  15000
+
+
+// health care percentage tax
+#define GOOD_HEALTH_CARE_TAX  0.0090
+#define  BAD_HEALTH_CARE_TAX  0.03
+
+#endif //MORTGAGE_CONSTANTS_H
